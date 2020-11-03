@@ -30,12 +30,11 @@ jobs:
           nim c -r tester
       - run: ./src/nimble install -y
 
-# The following is copied largely from alaviss/setup-nim to support
-# building a particular commit rather than the latest devel version.
-# Once alaviss/setup-nim support building a particular commit, it's
-# recommended that the following be removed.
-devel:
-  test:
+  # The following is copied largely from alaviss/setup-nim to support
+  # building a particular commit rather than the latest devel version.
+  # Once alaviss/setup-nim support building a particular commit, it's
+  # recommended that the following be removed.
+  devel:
     strategy:
       matrix:
         os:
