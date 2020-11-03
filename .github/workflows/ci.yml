@@ -5,30 +5,30 @@ on:
   pull_request:
 
 jobs:
-  test:
-    strategy:
-      matrix:
-        os:
-          - windows-latest
-          - macos-latest
-          - ubuntu-latest
-        nim:
-          - version-1-4
-          - version-1-0
+  # test:
+  #   strategy:
+  #     matrix:
+  #       os:
+  #         - windows-latest
+  #         - macos-latest
+  #         - ubuntu-latest
+  #       nim:
+  #         - version-1-4
+  #         - version-1-0
 
-    name: Nim ${{ matrix.nim }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: alaviss/setup-nim@0.1.0
-        with:
-          path: 'nim'
-          version: ${{ matrix.nim }}
-      - run: nim --version
-      - run: |
-          cd tests
-          nim c -r tester
-      - run: ./src/nimble install -y
+  #   name: Nim ${{ matrix.nim }} on ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: alaviss/setup-nim@0.1.0
+  #       with:
+  #         path: 'nim'
+  #         version: ${{ matrix.nim }}
+  #     - run: nim --version
+  #     - run: |
+  #         cd tests
+  #         nim c -r tester
+  #     - run: ./src/nimble install -y
 
   # The following is copied largely from alaviss/setup-nim to support
   # building a particular commit rather than the latest devel version.

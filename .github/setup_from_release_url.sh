@@ -128,8 +128,9 @@ cd "$out"
 
 if has-release "$tag"; then
   archive=$(get-archive-name)
-  msg "Downloading prebuilt archive '$archive' for tag '$tag'"
-  if ! curl -f -LO "$_download_url/$tag/$archive"; then
+  url="$_download_url/$tag/$archive"
+  msg "Downloading prebuilt archive '$archive' for tag '$tag' from '$url'"
+  if ! curl -f -LO "$url"; then
     err "Archive '$archive' could not be found and/or downloaded. Maybe your OS/architecture does not have any prebuilt available?"
     exit 1
   fi
