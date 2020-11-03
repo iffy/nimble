@@ -26,12 +26,12 @@
 set -eu
 set -o pipefail
 
-_releases_url=https://github.com/nim-lang/nightlies/releases/tag
+_releases_url=https://github.com/nim-lang/nightlies/releases
 _download_url=$_releases_url/download
 
 print-help() {
   cat <<EOF
-Usage: $0 [option] release-url
+Usage: $0 [option] archive-prefix release-url
 
 Downloads and install the latest Nim nightly from a release URL.
 The compiler can then be found in the 'bin' folder relative to the output
@@ -117,8 +117,8 @@ done
 unset opt
 
 shift $((OPTIND - 1))
-[[ $# -gt 0 ]] && tag=$1
-if [[ -z "$tag" ]]; then
+[[ $# -gt 0 ]] && prefix=$1 && tag=$2
+if [[ -z "$prefix" ]] || [[ -z "$tag" ]]; then
   print-help
   exit 1
 fi
@@ -127,7 +127,7 @@ mkdir -p "$out"
 cd "$out"
 
 if has-release "$tag"; then
-  archive=$(get-archive-name)
+  archive="$prefix-$(get-archive-name)"
   url="$_download_url/$tag/$archive"
   msg "Downloading prebuilt archive '$archive' for tag '$tag' from '$url'"
   if ! curl -f -LO "$url"; then

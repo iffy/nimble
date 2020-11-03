@@ -43,7 +43,7 @@ jobs:
           - ubuntu-latest
         tag:
           - 2020-11-03-devel-fde17b159fdc96eda5609fd98e1fe3c7a34ef40b
-          - 2020-10-25-devel-64eb62889a3c95986074b3e0d5656d7ad42ab826
+          # - 2020-10-25-devel-64eb62889a3c95986074b3e0d5656d7ad42ab826
     name: Nim ${{ matrix.tag }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -51,7 +51,7 @@ jobs:
       - name: 'Download the Nim compiler'
         shell: bash
         run: |
-          bash '.github/setup_from_release_url.sh' -o 'nim' '${{ matrix.tag }}'
+          bash '.github/setup_from_release_url.sh' -o 'nim' 'nim-1.5.1' '${{ matrix.tag }}'
       - name: 'Add the Nim compiler to PATH'
         shell: bash
         run: |
