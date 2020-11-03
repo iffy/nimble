@@ -5,34 +5,34 @@ on:
   pull_request:
 
 jobs:
-  # test:
-  #   strategy:
-  #     matrix:
-  #       os:
-  #         - windows-latest
-  #         - macos-latest
-  #         - ubuntu-latest
-  #       nim:
-  #         - version-1-4
-  #         - version-1-0
+  test:
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - macos-latest
+          - ubuntu-latest
+        nim:
+          - version-1-4
+          - version-1-0
 
-  #   name: Nim ${{ matrix.nim }} on ${{ matrix.os }}
-  #   runs-on: ${{ matrix.os }}
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: alaviss/setup-nim@0.1.0
-  #       with:
-  #         path: 'nim'
-  #         version: ${{ matrix.nim }}
-  #     - run: nim --version
-  #     - run: |
-  #         cd tests
-  #         nim c -r tester
-  #     - run: ./src/nimble install -y
+    name: Nim ${{ matrix.nim }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: alaviss/setup-nim@0.1.0
+        with:
+          path: 'nim'
+          version: ${{ matrix.nim }}
+      - run: nim --version
+      - run: |
+          cd tests
+          nim c -r tester
+      - run: ./src/nimble install -y
 
   # The following is copied largely from alaviss/setup-nim to support
   # building a particular commit rather than the latest devel version.
-  # Once alaviss/setup-nim support building a particular commit, it's
+  # Once alaviss/setup-nim supports building a particular commit, it's
   # recommended that the following be removed.
   devel:
     strategy:
@@ -43,7 +43,6 @@ jobs:
           - ubuntu-latest
         tag:
           - 2020-11-03-devel-fde17b159fdc96eda5609fd98e1fe3c7a34ef40b
-          # - 2020-10-25-devel-64eb62889a3c95986074b3e0d5656d7ad42ab826
     name: Nim ${{ matrix.tag }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
