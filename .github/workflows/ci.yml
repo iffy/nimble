@@ -39,6 +39,18 @@ jobs:
           cd nim/bin
           pwd >> $GITHUB_PATH
           pwd
+      - name: 'Add the Nim compiler to PATH'
+        shell: bash
+        run: |
+          add-path() {
+            echo "$1" >> "$GITHUB_PATH"
+            echo "Directory '$1' has been added to PATH."
+          }
+          path='nim'
+          path=$(python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "$path")
+          path=$path/bin
+          add-path "$path"
+          add-path "$HOME/.nimble/bin"
       - name: DEBUG
         shell: bash
         run: |
