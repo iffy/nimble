@@ -37,10 +37,13 @@ jobs:
           echo "GITHUB_PATH: $GITHUB_PATH"
           echo "PATH: $PATH"
           which nim
-      - run: nim --version      
-      - run: |
+      - shell: bash
+        run: nim --version      
+      - shell: bash
+        run: |
           cd tests
           nim c -r tester
-      - run: ./src/nimble install -y
+      - shell: bash
+        run: ./src/nimble install -y
 
   
