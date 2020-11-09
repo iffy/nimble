@@ -30,10 +30,13 @@ jobs:
           ./koch boot -d:release
           echo "$(pwd)/bin" >> $GITHUB_PATH
           echo "$HOME/.nimble/bin" >> $GITHUB_PATH
-      - run: nim --version
-      - run: |
+      - shell: bash
+        run: nim --version      
+      - shell: bash
+        run: |
           cd tests
           nim c -r tester
-      - run: ./src/nimble install -y
+      - shell: bash
+        run: ./src/nimble install -y
 
   
