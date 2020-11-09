@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
       - shell: bash
         run: |
-          curl -o source.tar.xz ${{ matrix.tarball }}
+          curl -L -o source.tar.xz ${{ matrix.tarball }}
           mkdir -p nimsrc
           tar xf source.tar.xz -C nimsrc
           cd nimsrc
