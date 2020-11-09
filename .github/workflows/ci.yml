@@ -26,7 +26,7 @@ jobs:
           cd nimsrc
           cd $(ls)
           sh build.sh
-          nim c -r koch boot -d:release
+          bin/nim c -r koch boot -d:release
       - run: nim --version
       - run: |
           cd tests
