@@ -38,6 +38,12 @@ jobs:
         run: |
           cd nim/bin
           pwd >> $GITHUB_PATH
+      - name: DEBUG
+        shell: bash
+        run: |
+          echo "PATH: $PATH"
+          which nim || echo no nim
+          which nimble || echo no nimble
       - run: nim --version      
       - name: Run nim c -r tester
         run: |
