@@ -35,7 +35,6 @@ jobs:
         run: |
           echo $PATH
           which nim
-          find "$HOME/.nimble"
       - shell: bash
         run: nim --version      
       - shell: bash
