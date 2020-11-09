@@ -35,13 +35,10 @@ jobs:
         run: |
           echo $PATH
           which nim
-      - shell: bash
-        run: nim --version      
-      - shell: bash
-        run: |
+      - run: nim --version      
+      - run: |
           cd tests
           nim c -r tester
-      - shell: bash
-        run: ./src/nimble install -y
+      - run: ./src/nimble install -y
 
   

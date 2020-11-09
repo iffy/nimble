@@ -19,6 +19,10 @@ putEnv("NIMBLE_TEST_BINARY_PATH", nimblePath)
 removeDir(installDir)
 createDir(installDir)
 
+# Show some debug info
+echo "PATH: ", getEnv("PATH")
+echo "nim: ", findExe"nim"
+
 # Always recompile.
 doAssert execCmdEx("nim c -d:danger " & path).exitCode == QuitSuccess
 
