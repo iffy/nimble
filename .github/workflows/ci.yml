@@ -21,10 +21,11 @@ jobs:
       - shell: bash
         run: |
           curl -L -o source.tar.xz ${{ matrix.tarball }}
-          mkdir -p nimsrc
-          tar xf source.tar.xz -C nimsrc
-          cd nimsrc
-          cd $(ls)
+          mkdir -p nimtmp
+          tar xf source.tar.xz -C nimtmp
+          cd nimtmp
+          mv $(ls) ../nim
+          cd ../nim
           pwd
           sh build.sh
           bin/nim c koch
@@ -32,18 +33,10 @@ jobs:
           echo "$(pwd)/bin" >> $GITHUB_PATH
           echo "$HOME/.nimble/bin" >> $GITHUB_PATH
           ls "$(pwd)/bin/"
-      - shell: bash
-        run: |
-          echo "GITHUB_PATH: $GITHUB_PATH"
-          echo "PATH: $PATH"
-          which nim
-      - shell: bash
-        run: nim --version      
-      - shell: bash
-        run: |
+      - name: Add nim/bin to PATH
+        run: python -c "import os; print(os.path.abspath(os.path.join("./nim/bin")))" >> $GITHUB_PATH
+      - run: nim --version      
+      - run: |
           cd tests
           nim c -r tester
-      - shell: bash
-        run: ./src/nimble install -y
-
-  
+      - run: ./src/nimble install -y
