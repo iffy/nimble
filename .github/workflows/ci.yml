@@ -26,7 +26,7 @@ jobs:
           cd nimsrc
           cd $(ls)
           sh build.sh
-          bin/nim c -r koch boot -d:release
+          sudo bin/nim c -r koch boot -d:release
           echo "$(pwd)/bin" >> $GITHUB_PATH
       - run: nim --version
       - run: |
