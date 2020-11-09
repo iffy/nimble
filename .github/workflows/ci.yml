@@ -20,15 +20,16 @@ jobs:
       - uses: actions/checkout@v2
       - shell: bash
         run: |
-          cd $GITHUB_WORKSPACE
           curl -L -o source.tar.xz ${{ matrix.tarball }}
           mkdir -p nimsrc
           tar xf source.tar.xz -C nimsrc
           cd nimsrc
           cd $(ls)
           sh build.sh
-          bin/nim c -r koch boot -d:release
+          bin/nim c koch
+          ./koch boot -d:release
           echo "$(pwd)/bin" >> $GITHUB_PATH
+          echo "$HOME/.nimble/bin" >> $GITHUB_PATH
       - run: nim --version
       - run: |
           cd tests
