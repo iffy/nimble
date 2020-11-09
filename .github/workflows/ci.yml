@@ -35,8 +35,9 @@ jobs:
           echo "$HOME/.nimble/bin" >> $GITHUB_PATH
           ls "$(pwd)/bin/"
       - name: Add nim/bin to PATH
-        # Doing this with Python so that it works in Windows/macOS/Linux
-        run: python -c 'import os; print(os.path.abspath(os.path.join("./nim/bin")))' >> $GITHUB_PATH
+        run: |
+          cd nim/bin
+          pwd >> $GITHUB_PATH
       - run: nim --version      
       - name: Run nim c -r tester
         run: |
