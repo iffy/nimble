@@ -19,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - shell: bash
+        working-directory: $GITHUB_WORKSPACE
         run: |
           curl -L -o source.tar.xz ${{ matrix.tarball }}
           mkdir -p nimsrc
@@ -26,7 +27,7 @@ jobs:
           cd nimsrc
           cd $(ls)
           sh build.sh
-          sudo bin/nim c -r koch boot -d:release
+          bin/nim c -r koch boot -d:release
           echo "$(pwd)/bin" >> $GITHUB_PATH
       - run: nim --version
       - run: |
