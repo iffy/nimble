@@ -30,10 +30,12 @@ jobs:
           ./koch boot -d:release
           echo "$(pwd)/bin" >> $GITHUB_PATH
           echo "$HOME/.nimble/bin" >> $GITHUB_PATH
+          ls "$(pwd)/bin/"
       - shell: bash
         run: |
           echo $PATH
           which nim
+          find "$HOME/.nimble"
       - shell: bash
         run: nim --version      
       - shell: bash
