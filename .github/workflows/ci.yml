@@ -1,0 +1,36 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - macos-latest
+          - ubuntu-latest
+        tarball:
+          - https://github.com/nim-lang/nightlies/releases/download/latest-version-1-2/source.tar.xz
+    name: ${{ matrix.os }} - ${{ matrix.tarball }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - shell: bash
+        run: |
+          curl -o source.tar.xz ${{ matrix.tarball }}
+          mkdir -p nimsrc
+          tar xf source.tar.xz -C nimsrc
+          cd nimsrc
+          cd $(ls)
+          sh build.sh
+          nim c -r koch boot -d:release
+      - run: nim --version
+      - run: |
+          cd tests
+          nim c -r tester
+      - run: ./src/nimble install -y
+
+  
