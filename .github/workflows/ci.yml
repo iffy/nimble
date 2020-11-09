@@ -18,7 +18,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - shell: bash
+      - name: Build Nim
+        shell: bash
         run: |
           curl -L -o source.tar.xz ${{ matrix.tarball }}
           mkdir -p nimtmp
@@ -34,9 +35,11 @@ jobs:
           echo "$HOME/.nimble/bin" >> $GITHUB_PATH
           ls "$(pwd)/bin/"
       - name: Add nim/bin to PATH
-        run: python -c "import os; print(os.path.abspath(os.path.join("./nim/bin")))" >> $GITHUB_PATH
+        # Doing this with Python so that it works in Windows/macOS/Linux
+        run: python -c 'import os; print(os.path.abspath(os.path.join("./nim/bin")))' >> $GITHUB_PATH
       - run: nim --version      
-      - run: |
+      - name: Run nim c -r tester
+        run: |
           cd tests
           nim c -r tester
       - run: ./src/nimble install -y
