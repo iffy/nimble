@@ -197,13 +197,14 @@ if [ -z "$GITHUB_PATH" ]; then
   echo "Not setting up PATH since GITHUB_PATH is not defined"
 else
   echo "Setting up PATH"
+  abspath() {
+    python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "$1"
+  }
   add-path() {
-    path=$(python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "$1")
-    echo "$path" >> "$GITHUB_PATH"
-    echo "Directory '$path' has been added to PATH."
     echo "$1" >> "$GITHUB_PATH"
     echo "Directory '$1' has been added to PATH."
   }
-  add-path "$NIMDIR/bin"
+  add-path "$(abspath "$NIMDIR/bin")"
+  add-path "$(pwd)/$NIMDIR/bin"
   add-path "$HOME/.nimble/bin"
 fi
