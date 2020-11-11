@@ -130,7 +130,7 @@ install_nightly() {
   echo "Extracting $archive_name to $(pwd)"
   if [[ $archive_name == *.zip ]]; then
     tmpdir=$(mktemp -d)
-    7z x "$archive" "-o$tmpdir"
+    7z x "$archive_name" "-o$tmpdir"
     extracted=( "$tmpdir"/* )
     mv "${extracted[0]}/"* .
     rm -rf "$tmpdir"
