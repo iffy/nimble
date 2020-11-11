@@ -138,7 +138,7 @@ install_sourcetar() {
   mkdir -p nimtmp
   tar xf source.tar.xz -C nimtmp
   cd nimtmp
-  mv $(ls) "$NIMDIR"
+  mv $(ls) "../$NIMDIR"
   cd ..
   rm source.tar.xz
   rm -r nimtmp
