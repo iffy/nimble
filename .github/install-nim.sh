@@ -1,4 +1,7 @@
 #!/bin/bash
+# Heavily borrowed from https://github.com/alaviss/setup-nim/blob/master/setup.sh
+# So I guess that makes this GPL?  Can someone add a license here if it's needed.
+
 usage() {
   cat <<EOF
 This script will install Nim for GitHub Actions from a variety of
@@ -30,14 +33,73 @@ EOF
 set +x
 NIMDIR=${NIMDIR:-nim}
 
+guess_archive_name() {
+  # Guess the archive name 
+  local ext=.tar.xz
+  local os; os=$(uname)
+  os=$(tr '[:upper:]' '[:lower:]' <<< "$os")
+  case "$os" in
+    'darwin')
+      os=macosx
+      ;;
+    'windows_nt'|mingw*)
+      os=windows
+      ext=.zip
+      ;;
+  esac
+  local arch; arch=$(uname -m)
+  case "$arch" in
+    aarch64)
+      arch=arm64 ;;
+    armv7l)
+      arch=arm ;;
+    i*86)
+      arch=x32 ;;
+    x86_64)
+      arch=x64 ;;
+  esac
+  echo "${os}_${arch}${ext}"
+}
+
+unpack_prebuilt() {
+  url=$1
+  archive_name=${archive_url##*/}
+  echo "archive name: $archive_name"
+
+  echo "Creating output dir..."
+  mkdir -p "$NIMDIR"
+  cd "$NIMDIR"
+
+  echo "Downloading $archive_url ..."
+  if ! curl -f -LO "$archive_url"; then
+    echo "Failed to download"
+    exit 1
+  fi
+  echo "Extracting $archive_name to $(pwd)"
+  if [[ $archive_name == *.zip ]]; then
+    tmpdir=$(mktemp -d)
+    7z x "$archive_name" "-o$tmpdir"
+    extracted=( "$tmpdir"/* )
+    mv "${extracted[0]}/"* .
+    rm -rf "$tmpdir"
+    unset tmpdir
+  else
+    tar -xf "$archive_name" --strip-components 1
+  fi
+  find "$NIMDIR"
+}
+
 #------------------------------------------------
 # Install a published released version of Nim
 #------------------------------------------------
 install_release() {
   version=$1
   echo "Installing Nim ${version}"
-  echo "ERROR: not yet supported"
-  exit 1
+  archive_name=$(guess_archive_name)
+  echo "Archive pattern: $archive_name"
+  url="https://nim-lang.org/download/nim-${version}-${archive_name}"
+  echo "Guessed URL: $url"
+  unpack_prebuilt "$url"
 }
 
 #------------------------------------------------
@@ -73,72 +135,22 @@ install_sourcetar() {
 #------------------------------------------------
 # Install nightly prebuild binaries
 # from a GitHub release URL
-#
-# Heavily borrowed from https://github.com/alaviss/setup-nim/blob/master/setup.sh
 #------------------------------------------------
 install_nightly() {
   url=${1%/}
   echo "Installing prebuilt binaries from: $url"
-  # Guess the archive name 
-  local ext=.tar.xz
-  local os; os=$(uname)
-  os=$(tr '[:upper:]' '[:lower:]' <<< "$os")
-  case "$os" in
-    'darwin')
-      os=macosx
-      ;;
-    'windows_nt'|mingw*)
-      os=windows
-      ext=.zip
-      ;;
-  esac
-  local arch; arch=$(uname -m)
-  case "$arch" in
-    aarch64)
-      arch=arm64 ;;
-    armv7l)
-      arch=arm ;;
-    i*86)
-      arch=x32 ;;
-    x86_64)
-      arch=x64 ;;
-  esac
-  echo "os: $os"
-  echo "arch: $arch"
+  archive_name=$(guess_archive_name)
+  echo "Archive pattern: $archive_name"
   local archive_url; archive_url=
   tag=${url##*/}
   echo "tag: $tag"
-  archive_name="${os}_${arch}${ext}"
   archive_url=$(curl -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/nim-lang/nightlies/releases/tags/$tag" | grep '"browser_download_url"' | grep "$archive_name" | head -n1 | cut -d'"' -f4)
   if [ -z "$archive_url" ]; then
     echo "ERROR: unable to find archive for $archive_name"
     exit 1
   fi
   echo "archive url: $archive_url"
-  archive_name=${archive_url##*/}
-  echo "archive name: $archive_name"
-  
-  echo "Creating output dir..."
-  mkdir -p "$NIMDIR"
-  cd "$NIMDIR"
-
-  echo "Downloading..."
-  if ! curl -f -LO "$archive_url"; then
-    echo "Failed to download"
-    exit 1
-  fi
-  echo "Extracting $archive_name to $(pwd)"
-  if [[ $archive_name == *.zip ]]; then
-    tmpdir=$(mktemp -d)
-    7z x "$archive_name" "-o$tmpdir"
-    extracted=( "$tmpdir"/* )
-    mv "${extracted[0]}/"* .
-    rm -rf "$tmpdir"
-    unset tmpdir
-  else
-    tar -xf "$archive_name" --strip-components 1
-  fi
-  find "$NIMDIR"
+  unpack_prebuilt "$archive_url"
 }
 
 #------------------------------------------------
