@@ -138,6 +138,7 @@ install_nightly() {
   else
     tar -xf "$archive_name" --strip-components 1
   fi
+  find "$NIMDIR"
 }
 
 #------------------------------------------------
@@ -171,12 +172,12 @@ if [ -z "$GITHUB_PATH" ]; then
 else
   echo "Setting up PATH"
   add-path() {
+    path=$(python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "$1")
+    echo "$path" >> "$GITHUB_PATH"
+    echo "Directory '$path' has been added to PATH."
     echo "$1" >> "$GITHUB_PATH"
     echo "Directory '$1' has been added to PATH."
   }
-  path=$NIMDIR
-  path=$(python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "$path")
-  path=$path/bin
-  add-path "$path"
+  add-path "$NIMDIR/bin"
   add-path "$HOME/.nimble/bin"
 fi

@@ -14,9 +14,9 @@ jobs:
           - ubuntu-latest
         target:
           - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-0/
-          - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-2/
-          - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-4/
-          - nightly:https://github.com/nim-lang/nightlies/releases/tag/2020-11-11-devel-bbe49a14ae827b6474d692042406716a3b3dd71f
+          # - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-2/
+          # - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-4/
+          # - nightly:https://github.com/nim-lang/nightlies/releases/tag/2020-11-11-devel-bbe49a14ae827b6474d692042406716a3b3dd71f
     name: ${{ matrix.os }} - ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     steps:
