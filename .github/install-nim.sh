@@ -85,7 +85,10 @@ unpack_prebuilt() {
   else
     tar -xf "$archive_name" --strip-components 1
   fi
-  find "$(pwd)"
+}
+
+build_nim() {
+
 }
 
 #------------------------------------------------
@@ -124,8 +127,12 @@ install_release() {
 install_git() {
   shalike=$1
   echo "Installing from Git: ${shalike}"
-  echo "ERROR: not yet supported"
-  exit 1
+  git clone -n https://github.com/nim-lang/Nim.git "$NIMDIR"
+  cd "$NIMDIR"
+  git checkout "$shalike"
+  sh build.sh
+  bin/nim c koch
+  ./koch boot -d:release
 }
 
 #------------------------------------------------
