@@ -21,7 +21,7 @@ format:
     $0 nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-0/
     $0 nightly:https://github.com/nim-lang/nightlies/releases/tag/2020-10-26-version-1-0-0ca09f64cf6ecf2050b58bc26ebc622f856b4dc2
   
-  TODO: From a specific Git SHA or branch of the github.com/nim-lang/Nim.git repo:
+  From a specific Git SHA or branch of the github.com/nim-lang/Nim.git repo:
   
     $0 git:2382937843092342342556456
     $0 git:devel
