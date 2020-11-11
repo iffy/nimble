@@ -12,12 +12,12 @@ jobs:
           - windows-latest
           - macos-latest
           - ubuntu-latest
-        tarball:
+        target:
           - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-0/
           - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-2/
           - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-4/
           - nightly:https://github.com/nim-lang/nightlies/releases/tag/2020-11-11-devel-bbe49a14ae827b6474d692042406716a3b3dd71f
-    name: ${{ matrix.os }} - ${{ matrix.tarball }}
+    name: ${{ matrix.os }} - ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
