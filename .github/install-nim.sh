@@ -61,7 +61,7 @@ guess_archive_name() {
 }
 
 unpack_prebuilt() {
-  url=$1
+  archive_url=$1
   archive_name=${archive_url##*/}
   echo "archive name: $archive_name"
 
