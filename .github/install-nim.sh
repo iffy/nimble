@@ -88,7 +88,13 @@ unpack_prebuilt() {
 }
 
 build_nim() {
-
+  if [ -e build.sh ]; then
+    sh build.sh
+  else
+    sh build_all.sh
+  fi
+  bin/nim c koch
+  ./koch boot -d:release
 }
 
 #------------------------------------------------
@@ -130,9 +136,8 @@ install_git() {
   git clone -n https://github.com/nim-lang/Nim.git "$NIMDIR"
   cd "$NIMDIR"
   git checkout "$shalike"
-  sh build.sh
-  bin/nim c koch
-  ./koch boot -d:release
+  ls -al
+  build_nim
 }
 
 #------------------------------------------------
@@ -150,9 +155,7 @@ install_sourcetar() {
   rm source.tar.xz
   rm -r nimtmp
   cd "$NIMDIR"
-  sh build.sh
-  bin/nim c koch
-  ./koch boot -d:release
+  build_nim
 }
 
 #------------------------------------------------
