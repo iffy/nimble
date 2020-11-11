@@ -85,7 +85,7 @@ unpack_prebuilt() {
   else
     tar -xf "$archive_name" --strip-components 1
   fi
-  find "$NIMDIR"
+  find "$(pwd)"
 }
 
 #------------------------------------------------
