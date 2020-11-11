@@ -77,7 +77,7 @@ install_sourcetar() {
 # Heavily borrowed from https://github.com/alaviss/setup-nim/blob/master/setup.sh
 #------------------------------------------------
 install_nightly() {
-  url=${1%%*(/)}
+  url=${1%/}
   echo "Installing prebuilt binaries from: $url"
   # Guess the archive name 
   local ext=.tar.xz
@@ -107,6 +107,7 @@ install_nightly() {
   echo "arch: $arch"
   local archive_url; archive_url=
   tag=${url##*/}
+  echo "tag: $tag"
   archive_name="${os}_${arch}${ext}"
   archive_url=$(curl -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/nim-lang/nightlies/releases/tags/$tag" | grep '"browser_download_url"' | grep "$archive_name" | head -n1 | cut -d'"' -f4)
   if [ -z "$archive_url" ]; then
