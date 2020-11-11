@@ -161,7 +161,7 @@ fi
 # Install Nim
 #------------------------------------------------
 echo "Installing Nim into dir: $NIMDIR"
-install_${install_type} "${install_arg}"
+(install_${install_type} "${install_arg}")
 
 #------------------------------------------------
 # Set up PATH
