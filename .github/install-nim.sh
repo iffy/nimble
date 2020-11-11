@@ -12,10 +12,9 @@ format:
 
     $0 sourcetar:https://github.com/nim-lang/nightlies/releases/download/latest-version-1-0/source.tar.xz
   
-  TODO: From a published release version:
+  From a published release version:
 
     $0 release:1.4.0
-    $0 1.4.0
   
   From a prebuilt nightly binary:
   
@@ -95,11 +94,28 @@ unpack_prebuilt() {
 install_release() {
   version=$1
   echo "Installing Nim ${version}"
-  archive_name=$(guess_archive_name)
-  echo "Archive pattern: $archive_name"
-  url="https://nim-lang.org/download/nim-${version}-${archive_name}"
-  echo "Guessed URL: $url"
-  unpack_prebuilt "$url"
+  local os; os=$(uname)
+  if [ "$os" == "Darwin" ]; then
+    # macos: install from source
+    install_sourcetar "https://nim-lang.org/download/nim-${version}.tar.xz"
+  elif [ "$os" == "Linux" ]; then
+    # linux: install from binary
+    archive_name=$(guess_archive_name)
+    echo "Archive pattern: $archive_name"
+    url="https://nim-lang.org/download/nim-${version}-${archive_name}"
+    echo "Guessed URL: $url"
+    unpack_prebuilt "$url"
+  else
+    # windows: install from binary
+    archive_name=$(guess_archive_name)
+    if echo "$archive_name" | grep x64; then
+      url="https://nim-lang.org/download/nim-${version}_x64.zip"
+    else
+      url="https://nim-lang.org/download/nim-${version}_x32.zip"
+    fi
+    echo "Guessed URL: $url"
+    unpack_prebuilt "$url"
+  fi
 }
 
 #------------------------------------------------
@@ -156,6 +172,7 @@ install_nightly() {
 #------------------------------------------------
 # main
 #------------------------------------------------
+set -e
 TARGET=$1
 if [ -z "$TARGET" ]; then
   usage
@@ -165,15 +182,12 @@ fi
 install_type=$(echo "$TARGET" | cut -d: -f1)
 install_arg=$(echo "$TARGET" | cut -d: -f2-)
 
-if [ -z "$install_arg" ]; then
-  install_arg="$install_type"
-  install_type="release"
-fi
-
 #------------------------------------------------
 # Install Nim
 #------------------------------------------------
 echo "Installing Nim into dir: $NIMDIR"
+echo "Install type: $install_type"
+echo "       param: $install_arg"
 (install_${install_type} "${install_arg}")
 
 #------------------------------------------------

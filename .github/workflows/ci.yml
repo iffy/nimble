@@ -18,10 +18,10 @@ jobs:
           # - nightly:https://github.com/nim-lang/nightlies/releases/latest-version-1-4/
           # - nightly:https://github.com/nim-lang/nightlies/releases/tag/2020-11-11-devel-bbe49a14ae827b6474d692042406716a3b3dd71f
           # - sourcetar:https://github.com/nim-lang/nightlies/releases/download/latest-version-1-0/source.tar.xz
-          # - sourcetar:https://github.com/nim-lang/nightlies/releases/download/latest-version-1-2/source.tar.xz
+          - sourcetar:https://github.com/nim-lang/nightlies/releases/download/latest-version-1-2/source.tar.xz
           # - sourcetar:https://github.com/nim-lang/nightlies/releases/download/latest-version-1-4/source.tar.xz
           # - sourcetar:https://github.com/nim-lang/nightlies/releases/download/2020-11-11-devel-bbe49a14ae827b6474d692042406716a3b3dd71f/nim-1.5.1.tar.xz
-          - '1.4.0'
+          - release:1.4.0
     name: ${{ matrix.os }} - ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     steps:
