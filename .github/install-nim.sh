@@ -37,6 +37,15 @@ EOF
 set +x
 NIMDIR=${NIMDIR:-nim}
 
+
+abspath() {
+  python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "$1"
+}
+add-path() {
+  echo "$1" >> "$GITHUB_PATH"
+  echo "Directory '$1' has been added to PATH."
+}
+
 guess_archive_name() {
   # Guess the archive name 
   local ext=.tar.xz
@@ -192,6 +201,7 @@ install_choosenim() {
   echo "Installing via choosenim for: $target"
   export CHOOSENIM_NO_ANALYTICS=1
   curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y
+  add-path "$HOME/.nimble/bin"
   choosenim "$target"
 }
 
@@ -222,13 +232,6 @@ if [ -z "$GITHUB_PATH" ]; then
   echo "Not setting up PATH since GITHUB_PATH is not defined"
 else
   echo "Setting up PATH"
-  abspath() {
-    python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "$1"
-  }
-  add-path() {
-    echo "$1" >> "$GITHUB_PATH"
-    echo "Directory '$1' has been added to PATH."
-  }
   add-path "$(abspath "$NIMDIR/bin")"
   add-path "$(pwd)/$NIMDIR/bin"
   add-path "$HOME/.nimble/bin"
