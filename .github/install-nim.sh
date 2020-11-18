@@ -43,6 +43,7 @@ abspath() {
 }
 add-path() {
   echo "$1" >> "$GITHUB_PATH"
+  export PATH="$1:$PATH"
   echo "Directory '$1' has been added to PATH."
 }
 
