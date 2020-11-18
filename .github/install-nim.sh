@@ -203,6 +203,7 @@ install_choosenim() {
   export CHOOSENIM_NO_ANALYTICS=1
   curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y
   add-path "$HOME/.nimble/bin"
+  add-path "$(abspath "$HOME/.nimble/bin")"
   choosenim "$target"
 }
 
