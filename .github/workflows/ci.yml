@@ -32,11 +32,11 @@ jobs:
           # - git:devel
           # - git:bbe49a14ae827b6474d692042406716a3b3dd71f
           - choosenim:stable
-          # - choosenim:1.4.0
-          # - choosenim:1.2.8
-          # - choosenim:1.0.10
-          # - choosenim:devel
-          # - choosenim:0.20.0
+          - choosenim:1.4.0
+          - choosenim:1.2.8
+          - choosenim:1.0.10
+          - choosenim:devel
+          - choosenim:0.20.0
     name: ${{ matrix.os }} - ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     steps:
