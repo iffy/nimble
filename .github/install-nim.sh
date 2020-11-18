@@ -25,6 +25,11 @@ format:
   
     $0 git:2382937843092342342556456
     $0 git:devel
+  
+  Using choosenim:
+
+    $0 choosenim:stable
+    $0 choosenim:1.4.0
 
 Set NIMDIR=path/where/nim/will/be
 EOF
@@ -180,6 +185,17 @@ install_nightly() {
 }
 
 #------------------------------------------------
+# Install using choosenim
+#------------------------------------------------
+install_choosenim() {
+  target="$1"
+  echo "Installing via choosenim for: $target"
+  export CHOOSENIM_NO_ANALYTICS=1
+  curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+  choosenim "$target"
+}
+
+#------------------------------------------------
 # main
 #------------------------------------------------
 set -e
@@ -195,7 +211,6 @@ install_arg=$(echo "$TARGET" | cut -d: -f2-)
 #------------------------------------------------
 # Install Nim
 #------------------------------------------------
-echo "Installing Nim into dir: $NIMDIR"
 echo "Install type: $install_type"
 echo "       param: $install_arg"
 (install_${install_type} "${install_arg}")
