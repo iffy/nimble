@@ -191,7 +191,7 @@ install_choosenim() {
   target="$1"
   echo "Installing via choosenim for: $target"
   export CHOOSENIM_NO_ANALYTICS=1
-  curl https://nim-lang.org/choosenim/init.sh -sSf | sh -y
+  curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y
   choosenim "$target"
 }
 
